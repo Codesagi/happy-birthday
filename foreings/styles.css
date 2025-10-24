@@ -1,0 +1,224 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Georgia', 'Times New Roman', serif;
+    background: linear-gradient(135deg, #2c1810 0%, #4a3728 100%);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    overflow: hidden;
+}
+
+.container {
+    max-width: 900px;
+    width: 100%;
+    position: relative;
+}
+
+.letter-wrapper {
+    perspective: 1500px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 600px;
+}
+
+.envelope {
+    width: 500px;
+    height: 350px;
+    background: #d4c4a1;
+    position: relative;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    transform-style: preserve-3d;
+    border: 2px solid #b8a482;
+}
+
+.envelope-flap {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #c4b491;
+    transform-origin: top;
+    transition: transform 0.8s ease;
+    z-index: 20; /* flap on top */
+    clip-path: polygon(0 0, 100% 0, 50% 40%);
+    border-bottom: 2px solid #b8a482;
+}
+
+.envelope-flap.open {
+    transform: rotateX(-180deg);
+}
+
+.wax-seal {
+    position: absolute;
+    top: 20%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80px;
+    height: 80px;
+    background: radial-gradient(circle, #8b0000 0%, #650000 100%);
+    border-radius: 50%;
+    z-index: 25; /* on top of flap */
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.wax-seal:hover {
+    transform: translate(-50%, -50%) scale(1.1);
+}
+
+.wax-seal.broken {
+    animation: sealBreak 0.5s forwards;
+}
+
+@keyframes sealBreak {
+    to {
+        transform: translate(-50%, -50%) scale(0) rotate(180deg);
+        opacity: 0;
+    }
+}
+
+.seal-inner {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 36px;
+    font-weight: bold;
+    color: #f4e4c1;
+    font-family: 'Brush Script MT', cursive;
+}
+
+.letter.preview {
+    position: absolute;
+    top: 100px;
+    left: 5%;
+    width: 90%;
+    height: 150px; /* top portion of letter */
+    background: #f4e4c1;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    z-index: 15; /* in front of envelope, behind flap */
+    pointer-events: none;
+}
+
+.letter {
+    position: absolute;
+    width: 90%;
+    height: 250px;
+    background: #f4e4c1;
+    left: 5%;
+    top: 100px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    cursor: grab;
+    border: 1px solid #e4d4b1;
+    z-index: 5; /* initially behind flap */
+    transition: all 1s ease, z-index 0s ease;
+}
+
+.letter:active {
+    cursor: grabbing;
+}
+
+.letter.pulled-out {
+    top: -150px;
+    height: 700px;
+    cursor: default;
+    z-index: 30; /* fully in front of flap */
+}
+
+.letter-content {
+    padding: 50px 40px;
+    opacity: 0;
+    transition: opacity 1s ease 0.5s;
+    height: 100%;
+    overflow-y: auto;
+}
+
+.letter.pulled-out .letter-content {
+    opacity: 1;
+}
+
+.letter-header {
+    text-align: right;
+    margin-bottom: 40px;
+    font-style: italic;
+    color: #4a3728;
+}
+
+.date {
+    margin-bottom: 5px;
+}
+
+.location {
+    font-size: 14px;
+}
+
+.salutation {
+    margin-bottom: 30px;
+    font-size: 20px;
+    color: #2c1810;
+}
+
+.letter-text {
+    margin-bottom: 20px;
+    line-height: 1.8;
+    text-align: justify;
+    color: #3a2818;
+    font-size: 16px;
+}
+
+.closing {
+    margin-top: 40px;
+    text-align: right;
+    line-height: 2;
+    color: #2c1810;
+}
+
+.signature {
+    font-family: 'Brush Script MT', cursive;
+    font-size: 24px;
+}
+
+/* Scrollbar styling */
+.letter-content::-webkit-scrollbar {
+    width: 8px;
+}
+
+.letter-content::-webkit-scrollbar-track {
+    background: #e4d4b1;
+}
+
+.letter-content::-webkit-scrollbar-thumb {
+    background: #b8a482;
+    border-radius: 4px;
+}
+
+@media (max-width: 768px) {
+    .envelope {
+        width: 90vw;
+        max-width: 400px;
+        height: 280px;
+    }
+    
+    .letter {
+        height: 200px;
+    }
+    
+    .letter.pulled-out {
+        height: 600px;
+        top: -100px;
+    }
+    
+    .letter-content {
+        padding: 30px 25px;
+    }
+}
